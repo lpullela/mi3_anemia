@@ -1,8 +1,21 @@
 import numpy as np
 from one_hot import create_tensor
 import pandas as pd
+import random
 
-df = pd.read_csv( 'compiled_df.csv')
+df_og = pd.read_csv( 'compiled_df.csv')
+
+def changeRatios( df_og, numberNonAnemics ): 
+    df = df_og.loc[ df_og[ 'ANEMIA'] == 0 ]
+    df = df.sample( numberNonAnemics )
+    df1 = df_og.loc[ df_og[ 'ANEMIA'] == 1 ]
+    print( "Percent of Anemic Patients: ", len( df1 ) / len( df ) * 100 )
+    df = df.append( df1 )
+
+    print( df.tail( 500 ))
+    return df
+
+df = changeRatios( df_og, 5000 )
 
 def createXY(): 
     # dim = ( len( df ), len( create_tensor( df, 0 )[ 1 ]  ) )
@@ -28,7 +41,9 @@ def createXY():
 #         y = np.append( y, [ anemic ] )
 #     return y
 
+
 X, y = createXY()
+    
 
 with open( 'x.npy', 'wb' ) as f: 
     np.save( f, X )

@@ -99,7 +99,7 @@ def bp_syst( age_col ):
 	while start < 160: 
 		bins.append( start + 5 )
 		start = start + 5
-	
+
 	one_hot_array = []
 
 	for element in age_col: 
@@ -135,35 +135,35 @@ def convert_to_onehot( data ):
 
 # #main function: 
 df = pd.read_csv( 'compiled_df.csv' )
-# anemia = []
-# csvfile = open( 'anemic_patients.csv', newline='')
-# reader = csv.reader( csvfile, delimiter=",")
-# reader_lst = []
-# for row in reader: 
-# 	reader_lst = reader_lst + row 
+anemia = []
+csvfile = open( 'anemic_patients_revised.csv', newline='')
+reader = csv.reader( csvfile, delimiter=",")
+reader_lst = []
+for row in reader: 
+	reader_lst = reader_lst + row 
 
-# count = 0
-# total = 0 
-# for element in df[ 'PAT_ID' ]: 
-# 	if str( element ) in reader_lst: 
-# 		anemia.append( 1 )
-# 		count = count + 1
-# 	else: 
-# 		anemia.append( 0 )
-# 	total = total + 1
+count = 0
+total = 0 
+for element in df[ 'PAT_ID' ]: 
+	if str( element ) in reader_lst: 
+		anemia.append( 1 )
+		count = count + 1
+	else: 
+		anemia.append( 0 )
+	total = total + 1
 	
-# print( "Count of Anemics: ", count )
-# print( "Percentage of Anemics: ", count / total * 100 , end="")
-# print( "%" )
-# df[ 'ANEMIA' ] = anemia
-# onehot_df = pd.DataFrame()
+print( "Count of Anemics: ", count )
+print( "Percentage of Anemics: ", count / total * 100 , end="")
+print( "%" )
+df[ 'ANEMIA' ] = anemia
+onehot_df = pd.DataFrame()
 
-# warn = input( "Do you want to regenerate csv file: ")
-# if warn.lower() == 'yes':
-# 	df.to_csv( 'compiled_df.csv', index=False )
+warn = input( "Do you want to regenerate csv file: ")
+if warn.lower() == 'yes':
+	df.to_csv( 'compiled_df.csv', index=False )
 
 
-# print( df )
+print( df )
 
 o2_lst = numpy.array( convert_to_onehot( o2_onehot( df[ "O2" ] )) )
 hr_lst = numpy.array( convert_to_onehot( hr_onehot( df[ "HR" ].tolist() ) ) )
