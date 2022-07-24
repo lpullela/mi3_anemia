@@ -16,7 +16,7 @@ with open( 'y.npy', 'rb' ) as f:
 
 print( y )
 
-X_train, X_test, y_train, y_test = train_test_split( X, y, test_size=0.1, random_state=110)
+X_train, X_test, y_train, y_test = train_test_split( X, y, test_size=0.1, random_state=100)
 
 model = Sequential()
 model.add(Dense(X.shape[ 1 ], input_shape=(X.shape[ 1 ],), activation='relu'))
@@ -31,7 +31,7 @@ model.add(Dense(1, activation='sigmoid'))
 
 model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy' ])
 
-model.fit(x=X_train, y=y_train, batch_size=32, epochs=20,
+model.fit(x=X_train, y=y_train, batch_size=32, epochs=15,
 shuffle=True, verbose=1, validation_split=0.1)
 
 model.summary()
@@ -43,6 +43,7 @@ print( '%' )
 
 y_targets = [] 
 y_pred =  model.predict( X_test )
+y_pred_proba = model.predict( X_test ).ravel()
 
 for i in y_pred: 
     for j in i: 
@@ -76,11 +77,11 @@ fpr = dict()
 tpr = dict()
 roc_auc = dict()
 for i in range( X.shape[ 0 ] ):
-    fpr[i], tpr[i], _ = roc_curve(y_test, y_targets )
+    fpr[i], tpr[i], _ = roc_curve(y_test, y_pred_proba )
     roc_auc[i] = auc(fpr[i], tpr[i])
 
 # Compute micro-average ROC curve and ROC area
-fpr["micro"], tpr["micro"], _ = roc_curve(y_test.ravel(), y_pred.ravel())
+fpr["micro"], tpr["micro"], _ = roc_curve(y_test , y_pred_proba )
 roc_auc["micro"] = auc(fpr["micro"], tpr["micro"])
 
 plt.figure(2)
